@@ -1,0 +1,8 @@
+test_script:
+  alias: Test script
+  sequence:
+  - type: toggle
+    device_id: 7f53e17c2360ebb040a9cfc662504871
+    entity_id: switch.test_led
+    domain: switch
+  mode: single
