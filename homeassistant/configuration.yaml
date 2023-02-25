@@ -1,15 +1,171 @@
+# Config examples provided by community https://www.home-assistant.io/examples/#example-configurationyaml
+
+# Following configuration is inspired by https://github.com/CiquattroFPV/Homeassistant-Example-Config
+
+####################################################
+#                                                  #
+#                Default Config                    #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/default_config/
+# Configure a default setup of Home Assistant (frontend, api, etc)
 
 # Loads default set of integrations. Do not remove.
+#person:
+#updater:
+#zone:
+#zeroconf:
+#system_health:
+#sun:
+#ssdp:
+#map:
+#logbook:
+#config:
+#history:
 default_config:
+logger:
+  default: info
 
-# Load frontend themes from the themes folder
-frontend:
-  themes: !include_dir_merge_named themes
+####################################################
+#                                                  #
+#                   CUSTOMIZING                    #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/docs/configuration/customizing-devices/
+#https://home-assistant.io/docs/configuration/basic/
+homeassistant:
+  name: The Bastion
+  # Location required to calculate the time the sun rises and sets
+  auth_providers: 
+    - type: homeassistant
+    - type: legacy_api_password
+      api_password: !secret http_password
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.1
+        - ::1
+        - fd00::/8
+        - 192.168.0.0/24
+      # allow_bypass_login: true
+  temperature_unit: C
+  time_zone: !secret timezone
+  latitude: !secret home_lat
+  longitude: !secret home_lon
+  currency: !secret currency
+  unit_system: metric
+  elevation: 47
+  customize: !include customize.yaml
+  customize_glob: !include customize_glob.yaml
+  packages: !include_dir_named packages
+  whitelist_external_dirs:
+    - /config
+  internal_url: "http://homeassistant.local:8123"
 
+####################################################
+#                                                  #
+#                     TTS                          #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/tts/
 # Text to speech
 tts:
   - platform: google_translate
 
+####################################################
+#                                                  #
+#                  Groups                          #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/mobile_app/
+#group: !include groups.yaml
+
+####################################################
+#                                                  #
+#                  Automations                     #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/automation/
 automation: !include automations.yaml
+
+####################################################
+#                                                  #
+#                  Scripts                         #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/script/
 script: !include scripts.yaml
+
+####################################################
+#                                                  #
+#                   Scene                          #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/scene/
 scene: !include scenes.yaml
+
+
+####################################################
+#                                                  #
+#                  Mobile APP                      #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/mobile_app/
+mobile_app:
+
+####################################################
+#                  Dev Tracker                     #
+#                                                  #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/device_tracker/
+#device_tracker: !include device_tracker.yaml
+
+####################################################
+#                                                  #
+#                   MQTT                           #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/integrations/mqtt/
+# Disable cause enabled from integrations
+# mqtt: !include mqtt.yaml
+
+####################################################
+#                                                  #
+#               Frontend/Themes                    #
+#                                                  #
+####################################################
+frontend:
+  #themes: !include themes.yaml
+  themes: !include_dir_merge_named themes
+
+####################################################
+#                                                  #
+#                   Dashboard                      #
+#                                                  #
+####################################################
+# https://www.home-assistant.io/dashboards/dashboards/
+# 
+# To change the default dashboard, create a new file 
+# ui-lovelace.yaml in your configuration directory and 
+# add the following section to your configuration.yaml 
+# and restart Home Assistant:
+
+#lovelace:
+#  mode: yaml
+
+
+####################################################
+#                                                  #
+#                   SPEEDTEST                      #
+#                                                  #
+####################################################
+
+#https://www.home-assistant.io/components/speedtestdotnet/
+#speedtestdotnet:
+#  server_id: 3243 # server "Telecom Italia S.p.A." Rome
+#  scan_interval:
+#    hours: 4
+#  monitored_conditions:
+#    - ping
+#    - download
+#    - upload
