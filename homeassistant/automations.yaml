@@ -1,1 +1,73 @@
-[]
+- id: '1678208370135'
+  alias: Close covers at night
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: device
+      device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+      domain: cover
+      entity_id: cover.roli
+      type: is_opening
+    - condition: device
+      device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+      domain: cover
+      entity_id: cover.roli
+      type: is_open
+  action:
+  - type: turn_off
+    device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+    entity_id: switch.roli_open
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - type: turn_on
+    device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+    entity_id: switch.roli_close
+    domain: switch
+  - type: turn_off
+    device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+    entity_id: switch.lampek
+    domain: switch
+  mode: single
+- id: '1678218626177'
+  alias: Open covers at sunrise
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 00:20
+  condition:
+  - condition: or
+    conditions:
+    - condition: device
+      device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+      domain: cover
+      entity_id: cover.roli
+      type: is_closed
+    - condition: device
+      device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+      domain: cover
+      entity_id: cover.roli
+      type: is_closing
+  action:
+  - type: turn_off
+    device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+    entity_id: switch.roli_close
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - type: turn_on
+    device_id: 3d38ab7ce295b1a3ab9e86e0c047e78e
+    entity_id: switch.roli_open
+    domain: switch
+  mode: single

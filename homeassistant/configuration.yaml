@@ -2,6 +2,11 @@
 
 # Following configuration is inspired by https://github.com/CiquattroFPV/Homeassistant-Example-Config
 
+
+person:
+  - name: Smi
+    id: smilja
+
 ####################################################
 #                                                  #
 #                Default Config                    #
@@ -150,8 +155,8 @@ frontend:
 # add the following section to your configuration.yaml 
 # and restart Home Assistant:
 
-#lovelace:
-#  mode: yaml
+lovelace:
+  mode: yaml
 
 
 ####################################################

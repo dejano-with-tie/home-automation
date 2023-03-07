@@ -1,0 +1,64 @@
+title: The Bastion
+views:
+    # View tab title.
+  - title: Home
+    icon: mdi:home-assistant
+    # Unique path for direct access /lovelace/${path}
+    path: home
+    # Each view can have a different theme applied. Theme should be defined in the frontend.
+    theme: dark-mode
+    # The cards to show on this view.
+    cards:
+      - type: entities
+        entities:
+          - switch.lampek
+          - cover.roli
+          - switch.roli_close
+          - switch.roli_open
+        title: Bedroom
+        state_color: true
+        show_header_toggle: false
+
+      - type: grid
+        square: true
+        columns: 3
+        cards:
+          - show_state: true
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: person.dejan
+            aspect_ratio: '1'
+            image: >-
+              data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0
+              50 50' width='50' height='50'
+              style='background-color:%23b3e5fC'%3E%3Cg%3E%3Ctext font-family='roboto'
+              x='50%25' y='50%25' text-anchor='middle' stroke='%23212121'
+              font-size='1.3em' dy='.3em'%3ED%3C/text%3E%3C/g%3E%3C/svg%3E
+          - type: picture-entity
+            entity: person.smilja
+            aspect_ratio: '1'
+            show_name: false
+            image: >-
+              http://thebastion.duckdns.org:8123/api/image/serve/31f12b7944c0f7d25ec23b8a9f4bb466/512x512
+
+      - type: media-control
+        entity: media_player.eon_smart_box
+
+      - type: weather-forecast
+        show_current: true
+        show_forecast: true
+        entity: weather.forecast_home
+
+      - type: entities
+        entities:
+          - switch.device_restart
+          - entity: update.esp8266_01_a_firmware
+            name: Firmware
+        title: esp8266-01-a
+        state_color: true
+        show_header_toggle: false
+
+
+      - type: media-control
+        entity: media_player.lg_webos_tv_oled55c11lb

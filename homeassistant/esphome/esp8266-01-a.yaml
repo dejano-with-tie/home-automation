@@ -1,0 +1,104 @@
+esphome:
+  name: esp8266-01-a
+  friendly_name: esp8266-01-a
+
+  on_boot:
+    priority: 800
+    then:
+    - delay: 1000 ms
+    - switch.turn_off: open_cover_switch
+    - switch.turn_off: close_cover_switch
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+# Disable logging
+logger:
+  baud_rate: 0 # Defaults to 115200. Set to 0 to disable logging via UART. This is done because TX pin is used as GPIO pin.
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "emecm3nIN2puNBH6ApnCE2/e1pxWNTaSb7LT9BTEpHY="
+
+ota:
+  password: "407998762df7a8504bbbacd980ad3892"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp8266-01-A Fallback Hotspot"
+    password: "txRGH3BYuasE"
+
+captive_portal:
+    
+switch:
+  # Cover
+  - platform: gpio
+    id: open_cover_switch
+    pin:
+      number: GPIO1
+      mode: 
+        output: true
+    name: "Roli Open"
+    icon: mdi:arrow-collapse-up
+    inverted: False
+    restore_mode: ALWAYS_OFF
+    interlock: [close_cover_switch]
+    
+
+  - platform: gpio
+    id: close_cover_switch
+    pin:
+      number: GPIO0
+      mode: 
+        output: true
+    name: "Roli Close"
+    icon: mdi:arrow-collapse-down
+    inverted: False
+    restore_mode: ALWAYS_OFF
+    interlock: [open_cover_switch]
+
+  # Lamp
+  - platform: gpio
+    id: lamp_switch
+    pin:
+      number: GPIO2
+      mode: 
+        output: true
+    name: "Lampek"
+    icon: mdi:desk-lamp
+    # wired to relay as normally closed because lamp has phisical switch
+    inverted: true
+    on_turn_on: 
+      then:
+        - logger.log:
+            level: DEBUG
+            format: 'The state of lamp_switch is %d'
+            args: ['id(lamp_switch).state']
+
+  # Restart
+  - platform: restart
+    name: "Device Restart" # optional device restart switch, change the name
+
+cover:
+  - platform: time_based
+    name: "Roli"
+    #assumed_state: True
+    #has_built_in_endstop: True
+
+    open_action:
+      - switch.turn_on: open_cover_switch
+    open_duration: 2.1min
+
+    close_action:
+      - switch.turn_on: close_cover_switch
+    close_duration: 2min
+
+    stop_action:
+      - switch.turn_off: open_cover_switch
+      - switch.turn_off: close_cover_switch
